@@ -80,6 +80,12 @@ for future releases.
 The [Naja Regress](https://github.com/najaeda/naja-regress) repository features a collection of examples
 showcasing extensive use of `naja_edit`.
 
+#### Using Docker
+
+```bash
+docker run --rm -it -u $(id -u ${USER}):$(id -g ${USER}) -v $(pwd):/naja_edit/ xtofalex/naja_edit:latest
+```
+
 <div align="right">[ <a href="#Introduction">↑ Back to top ↑</a> ]</div>
 
 ---

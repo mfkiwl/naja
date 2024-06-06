@@ -761,7 +761,9 @@ std::string SNLVRLDumper::getLibraryFileName(const SNLLibrary* library) const {
   return "library.v";
 } 
 
-void SNLVRLDumper::dumpDesign(const SNLDesign* design, const std::filesystem::path& path) {
+void SNLVRLDumper::dumpDesign(
+  const SNLDesign* design,
+  const std::filesystem::path& path) {
   if (not std::filesystem::exists(path)) {
     std::ostringstream reason;
     if (not design->isAnonymous()) {

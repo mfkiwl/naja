@@ -118,17 +118,17 @@ class SNLVRLDumper {
     static std::string createInstanceName(const SNLInstance* instance, DesignInsideAnonymousNaming& naming);
     static SNLName createNetName(const SNLNet* net, DesignInsideAnonymousNaming& naming);
     static SNLName getNetName(const SNLNet* net, const DesignInsideAnonymousNaming& naming);
-    void dumpOneDesign(const SNLDesign* design, std::ostream& o);
-    void dumpParameter(const SNLParameter* parameter, std::ostream& o);
-    void dumpParameters(const SNLDesign* design, std::ostream& o);
-    void dumpInstances(const SNLDesign* design, std::ostream& o, DesignInsideAnonymousNaming& naming);
-    bool dumpInstance(const SNLInstance* instance, std::ostream& o, DesignInsideAnonymousNaming& naming);
-    void dumpInstParameters(const SNLInstance* instance, std::ostream& o);
-    void dumpInstanceInterface(const SNLInstance* instance, std::ostream& o, const DesignInsideAnonymousNaming& naming);
-    void dumpNets(const SNLDesign* design, std::ostream& o, DesignInsideAnonymousNaming& naming);
-    bool dumpNet(const SNLNet* net, std::ostream& o, DesignInsideAnonymousNaming& naming);
+    static void dumpOneDesign(const SNLDesign* design, std::ostream& o);
+    static void dumpParameter(const SNLParameter* parameter, std::ostream& o);
+    static void dumpParameters(const SNLDesign* design, std::ostream& o);
+    static void dumpInstances(const SNLDesign* design, std::ostream& o, DesignInsideAnonymousNaming& naming);
+    static bool dumpInstance(const SNLInstance* instance, std::ostream& o, DesignInsideAnonymousNaming& naming);
+    static void dumpInstParameters(const SNLInstance* instance, std::ostream& o);
+    static void dumpInstanceInterface(const SNLInstance* instance, std::ostream& o, const DesignInsideAnonymousNaming& naming);
+    static void dumpNets(const SNLDesign* design, std::ostream& o, DesignInsideAnonymousNaming& naming);
+    static bool dumpNet(const SNLNet* net, std::ostream& o, DesignInsideAnonymousNaming& naming);
 
-    void dumpTermNetAssign(
+    static void dumpTermNetAssign(
       const SNLTerm::Direction& direction,
       const std::string& termNetName,
       const std::string& netName,
@@ -136,10 +136,10 @@ class SNLVRLDumper {
     /**
      * Special method to dump assign representations of nets connected to terms
      */
-    void dumpTermAssigns(const SNLDesign* design, std::ostream& o);
-    void dumpInterface(const SNLDesign* design, std::ostream& o, DesignInsideAnonymousNaming& naming);
+    static void dumpTermAssigns(const SNLDesign* design, std::ostream& o);
+    static void dumpInterface(const SNLDesign* design, std::ostream& o, DesignInsideAnonymousNaming& naming);
     using BitNetVector = std::vector<SNLBitNet*>;
-    void dumpInsTermConnectivity(
+    static void dumpInsTermConnectivity(
       const SNLTerm* term,
       BitNetVector& termNets,
       std::ostream& o,

@@ -167,8 +167,26 @@ bool SNLInstance::deepCompare(const SNLInstance* other, std::string& reason) con
   return true;
 }
 
+void SNLInstance::createInstTerm(SNLInstanceInstTerms& instTerms, SNLBitTerm* term) {
+  instTerms.push_back(SNLInstTerm::create(this, term));
+}
+
 void SNLInstance::createInstTerm(SNLBitTerm* term) {
-  instTerms_.push_back(SNLInstTerm::create(this, term));
+  createInstTerm(instTerms_, term);
+}
+
+void SNLInstance::createInstTerms(SNLInstanceInstTerms& instTerms, SNLDesign* model) {
+  //create instance terminals
+  for (SNLTerm* term: model->getTerms()) {
+    if (SNLBusTerm* bus = dynamic_cast<SNLBusTerm*>(term)) {
+      for (auto bit: bus->getBits()) {
+        createInstTerm(instTerms, bit);
+      }
+    } else {
+      SNLScalarTerm* scalar = static_cast<SNLScalarTerm*>(term);
+      createInstTerm(instTerms_, scalar);
+    }
+  }
 }
 
 void SNLInstance::removeInstTerm(SNLBitTerm* term) {
@@ -470,7 +488,6 @@ void SNLInstance::setModel(SNLDesign* model) {
     throw SNLException("SNLInstance::setModel error: different number of terms");
   }
 
-  using BitTermMap = std::map<SNLBitTerm*, SNLBitTerm*>;
   BitTermMap bitTermMap;
   for (size_t i=0; i<currentTerms.size(); ++i) {
     auto currentTerm = currentTerms[i];
@@ -549,6 +566,39 @@ void SNLInstance::setModel(SNLDesign* model) {
     auto newParameter = it->second;
     instParameter.parameter_ = newParameter;
   }
+  if (not model_->isPrimitive()) {
+    model_->removeSlaveInstance(this);
+  }
+  if (not model->isPrimitive()) {
+    model->addSlaveInstance(this);
+  }
+  model_ = model;
+}
+
+void SNLInstance::setModel(SNLDesign* model, const BitTermMap& bitTermMap) {
+  if (getModel() == model) {
+    return;
+  }
+  
+  SNLInstanceInstTerms newInstTerms;
+  createInstTerms(newInstTerms, model);
+  for (auto instTerm: instTerms_) {
+    auto currentTerm = instTerm->getBitTerm();
+    auto it = bitTermMap.find(currentTerm);
+    if (it == bitTermMap.end()) {
+      throw SNLException("SNLInstance::setModel error: term not found in new model");
+    }
+    auto newTerm = it->second;
+
+    auto net = instTerm->getNet();
+    if (net) {
+      auto currentInstTerm = getInstTerm(newTerm);
+      currentInstTerm->setNet(net);
+      instTerm->setNet(nullptr);
+    }
+  }
+  instTerms_.swap(newInstTerms);
+
   if (not model_->isPrimitive()) {
     model_->removeSlaveInstance(this);
   }

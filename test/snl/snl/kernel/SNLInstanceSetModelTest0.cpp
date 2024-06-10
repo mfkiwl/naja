@@ -17,7 +17,7 @@
 #include "SNLException.h"
 using namespace naja::SNL;
 
-class SNLInstanceSetModelTest: public ::testing::Test {
+class SNLInstanceSetModelTest0: public ::testing::Test {
   protected:
     void SetUp() override {
       auto universe = SNLUniverse::create();
@@ -61,7 +61,7 @@ class SNLInstanceSetModelTest: public ::testing::Test {
     SNLInstance*  ins1_   {nullptr};
 };
 
-TEST_F(SNLInstanceSetModelTest, test0) {
+TEST_F(SNLInstanceSetModelTest0, test0) {
   EXPECT_EQ(2, model_->getSlaveInstances().size());
   //clone model
   auto newModel = model_->clone();
@@ -81,12 +81,12 @@ TEST_F(SNLInstanceSetModelTest, test0) {
   EXPECT_EQ(ins0_, *(newModel->getSlaveInstances().begin()));
 }
 
-TEST_F(SNLInstanceSetModelTest, testSameModel) {
+TEST_F(SNLInstanceSetModelTest0, testSameModel) {
   ins0_->setModel(model_);
   EXPECT_EQ(ins0_->getModel(), model_);
 }
 
-TEST_F(SNLInstanceSetModelTest, testDifferentTermSizeError) {
+TEST_F(SNLInstanceSetModelTest0, testDifferentTermSizeError) {
   //clone model
   auto newModel = model_->clone();
   ASSERT_NE(newModel, nullptr);
@@ -97,7 +97,7 @@ TEST_F(SNLInstanceSetModelTest, testDifferentTermSizeError) {
   EXPECT_THROW(ins0_->setModel(newModel), SNLException);  
 }
 
-TEST_F(SNLInstanceSetModelTest, testAnonymousContradictionError) {
+TEST_F(SNLInstanceSetModelTest0, testAnonymousContradictionError) {
   //clone model
   auto newModel = model_->clone();
   ASSERT_NE(newModel, nullptr);
@@ -108,7 +108,7 @@ TEST_F(SNLInstanceSetModelTest, testAnonymousContradictionError) {
   EXPECT_THROW(ins0_->setModel(newModel), SNLException);  
 }
 
-TEST_F(SNLInstanceSetModelTest, testDifferentTermNameError) {
+TEST_F(SNLInstanceSetModelTest0, testDifferentTermNameError) {
   //clone model
   auto newModel = model_->clone();
   ASSERT_NE(newModel, nullptr);
@@ -119,7 +119,7 @@ TEST_F(SNLInstanceSetModelTest, testDifferentTermNameError) {
   EXPECT_THROW(ins0_->setModel(newModel), SNLException);  
 }
 
-TEST_F(SNLInstanceSetModelTest, testDifferentTermIDError) {
+TEST_F(SNLInstanceSetModelTest0, testDifferentTermIDError) {
   //clone model
   auto newModel = model_->clone();
   ASSERT_NE(newModel, nullptr);
@@ -131,7 +131,7 @@ TEST_F(SNLInstanceSetModelTest, testDifferentTermIDError) {
   EXPECT_THROW(ins0_->setModel(newModel), SNLException);  
 }
 
-TEST_F(SNLInstanceSetModelTest, testDifferentTermDirectionError) {
+TEST_F(SNLInstanceSetModelTest0, testDifferentTermDirectionError) {
   //clone model
   auto newModel = model_->clone();
   ASSERT_NE(newModel, nullptr);
@@ -142,7 +142,7 @@ TEST_F(SNLInstanceSetModelTest, testDifferentTermDirectionError) {
   EXPECT_THROW(ins0_->setModel(newModel), SNLException);  
 }
 
-TEST_F(SNLInstanceSetModelTest, testDifferentSizeBusError) {
+TEST_F(SNLInstanceSetModelTest0, testDifferentSizeBusError) {
   //clone model
   auto newModel = model_->clone();
   ASSERT_NE(newModel, nullptr);
@@ -155,7 +155,7 @@ TEST_F(SNLInstanceSetModelTest, testDifferentSizeBusError) {
   EXPECT_THROW(ins0_->setModel(newModel), SNLException);  
 }
 
-TEST_F(SNLInstanceSetModelTest, testDifferentTermTypesError) {
+TEST_F(SNLInstanceSetModelTest0, testDifferentTermTypesError) {
   //clone model
   auto newModel = model_->clone();
   ASSERT_NE(newModel, nullptr);
@@ -168,7 +168,7 @@ TEST_F(SNLInstanceSetModelTest, testDifferentTermTypesError) {
   EXPECT_THROW(ins0_->setModel(newModel), SNLException);  
 }
 
-TEST_F(SNLInstanceSetModelTest, testDifferentParametersSizeError) {
+TEST_F(SNLInstanceSetModelTest0, testDifferentParametersSizeError) {
   //clone model
   auto newModel = model_->clone();
   ASSERT_NE(newModel, nullptr);
@@ -184,7 +184,7 @@ TEST_F(SNLInstanceSetModelTest, testDifferentParametersSizeError) {
   EXPECT_THROW(ins0_->setModel(newModel), SNLException);  
 }
 
-TEST_F(SNLInstanceSetModelTest, testDifferentParameterNameError) {
+TEST_F(SNLInstanceSetModelTest0, testDifferentParameterNameError) {
   //clone model
   auto newModel = model_->clone();
   ASSERT_NE(newModel, nullptr);

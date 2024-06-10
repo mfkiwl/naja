@@ -115,13 +115,13 @@ class SNLInstance final: public SNLDesignObject {
      */
     void setTermsNets(const Terms& terms, const Nets& nets);
     /**
-     * \brief Helper function allowing to connect a SNLTerm representative in current instance to the
+     * \brief Helper method allowing to connect a SNLTerm representative in current instance to the
      * corresponding SNLNet bits.
      * \remark term and net must have the same size.
      */
     void setTermNet(SNLTerm* term, SNLNet* net);
     /**
-     * \brief Helper function allowing to connect a SNLTerm representative in current instance to the
+     * \brief Helper method allowing to connect a SNLTerm representative in current instance to the
      * corresponding SNLNet bits. This version allows to connect a subpart of bits.
      */
     void setTermNet(
@@ -130,7 +130,7 @@ class SNLInstance final: public SNLDesignObject {
       SNLNet* net,
       SNLID::Bit netMSB, SNLID::Bit netLSB);
     /**
-     * \brief Helper function allowing to connect a SNLTerm representative in current instance to the
+     * \brief Helper method allowing to connect a SNLTerm representative in current instance to the
      * corresponding SNLNet bits. This version allows to connect a subpart of net bits.
      */
     void setTermNet(
@@ -138,7 +138,15 @@ class SNLInstance final: public SNLDesignObject {
       SNLNet* net,
       SNLID::Bit netMSB, SNLID::Bit netLSB);
 
-    void setModel(SNLDesign* newModel);
+    /**
+     * \brief set the model of this instance.
+     * \param model new model.
+     * Previous and new model need to have the same interface: same terms, same parameters.
+     */
+    void setModel(SNLDesign* model);
+
+    using BitTermMap = std::map<SNLBitTerm*, SNLBitTerm*>;
+    void setModel(SNLDesign* newModel, const BitTermMap& bitTermMap);
 
   private:
     SNLInstance(SNLDesign* design, SNLDesign* model, const SNLName& name);
@@ -155,6 +163,8 @@ class SNLInstance final: public SNLDesignObject {
     void destroyFromModel();
     void preDestroy() override;
     void createInstTerm(SNLBitTerm* term);
+    void createInstTerm(SNLInstanceInstTerms& instTerms, SNLBitTerm* term);
+    void createInstTerms(SNLInstanceInstTerms& instTerms, SNLDesign* model);
     void removeInstTerm(SNLBitTerm* term);
     SNLInstance* clone(SNLDesign* design) const;
 

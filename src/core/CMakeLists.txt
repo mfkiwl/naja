@@ -45,8 +45,8 @@ set(NAJA_CORE_HEADERS
 
 list(APPEND NAJA_CORE_HEADERS ${CMAKE_CURRENT_BINARY_DIR}/NajaVersion.h)
 
-add_library(naja_core SHARED ${SOURCES})
-#target_link_libraries(naja_core PUBLIC cpptrace::cpptrace coverage_config sanitizers_config)
+add_library(naja_core STATIC ${SOURCES})
+set_property(TARGET naja_core PROPERTY POSITION_INDEPENDENT_CODE ON)
 target_link_libraries(naja_core PUBLIC coverage_config sanitizers_config)
 
 target_compile_options(naja_core PRIVATE ${NAJA_CXX_WARNINGS}) 
@@ -57,7 +57,9 @@ target_include_directories(naja_core PUBLIC
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-set_target_properties(naja_core PROPERTIES PUBLIC_HEADER "${NAJA_CORE_HEADERS}")
+if(NOT BUILD_NAJA_PYTHON)
+  set_target_properties(naja_core PROPERTIES PUBLIC_HEADER "${NAJA_CORE_HEADERS}")
+endif(NOT BUILD_NAJA_PYTHON)
 
 install(TARGETS naja_core
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

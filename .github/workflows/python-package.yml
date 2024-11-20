@@ -20,25 +20,34 @@ jobs:
       with:
         submodules: true
 
+    - name: Linux setup
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update && sudo apt-get install -yq libboost-dev libfl-dev
+        
+
+    - name: macOS setup
+      if: runner.os == 'macOS'
+      run: | 
+        brew install bison flex boost
+        echo "/usr/local/opt/flex/bin" >> $GITHUB_PATH; echo "/usr/local/opt/bison/bin" >> $GITHUB_PATH;
+        echo "/opt/homebrew/opt/flex/bin" >> $GITHUB_PATH; echo "/opt/homebrew/opt/bison/bin" >> $GITHUB_PATH
+        pip install scikit-build
+
+    - name: Python setup
+      run: |
+        python -m pip install --upgrade pip
+        pip install scikit-build setuptools wheel
+        
+
     - name: Build and Repair Wheels on Linux
       if: runner.os == 'Linux'
       run: |
-        docker run --rm -v ${{ github.workspace }}:/io quay.io/pypa/manylinux2010_x86_64 /bin/bash -c "
-          yum install -y boost-devel flex bison &&
-          cd /io &&
-          pip install scikit-build setuptools wheel &&
-          python setup.py bdist_wheel &&
-          pip install auditwheel &&
-          auditwheel repair dist/*.whl -w /io/dist/
-        "
+        python setup.py bdist_wheel
 
     - name: Build Wheels on macOS
       if: runner.os == 'macOS'
       run: |
-        brew install bison flex boost
-        echo "/usr/local/opt/flex/bin" >> $GITHUB_PATH; echo "/usr/local/opt/bison/bin" >> $GITHUB_PATH;
-        echo "/opt/homebrew/opt/flex/bin" >> $GITHUB_PATH; echo "/opt/homebrew/opt/bison/bin" >> $GITHUB_PATH
-        pip install scikit-build setuptools wheel
         python setup.py bdist_wheel
         
 #    - name: Upload to PyPI

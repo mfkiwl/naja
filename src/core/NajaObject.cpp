@@ -52,4 +52,46 @@ void NajaObject::preDestroy() {
   }
 }
 
+
+  void  NajaObject::put(NajaProperty* property )
+  {
+    //if ( !property )
+      //throw Error("DBo::put(): Can't put property : NULL property.");
+
+    NajaProperty* oldProperty = getProperty ( property->getName() );
+    if ( property != oldProperty ) {
+      if ( oldProperty ) {
+        removeProperty( oldProperty );
+        oldProperty->onReleasedBy(this);
+      }
+      addProperty(property);
+    }
+  }
+
+
+void NajaObject::remove(NajaProperty* property) {
+  printf("NajaObject::remove\n");
+  if ( !property ) {
+    assert(false);
+      //throw Error("DBo::remove(): Can't remove property : NULL property.");
+    // Find property in properties_ and remove it
+     //removeProperty(property);
+    }
+    if ( properties_.find(property->getName()) != properties_.end() ) {
+      removeProperty(property);
+      printf("NajaObject::remove on ReleaseBy\n");
+      property->onReleasedBy ( this );
+      //if ( dynamic_cast<Quark*>(this) && properties_.empty() ) TODO
+      //  destroy(); TODO
+    }
+}
+
+void  NajaObject::onDestroyed (NajaProperty* property)
+  {
+    if ( properties_.find(property->getName()) != properties_.end() ) {
+      removeProperty(property);
+    }
+  }
+
+
 } // namespace naja

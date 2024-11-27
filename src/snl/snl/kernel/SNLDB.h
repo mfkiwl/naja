@@ -85,7 +85,6 @@ class SNLDB final: public SNLObject {
     }
 
     bool deepCompare(const SNLDB* db, std::string& reason) const;
-
   private:
     SNLDB() = default;
     SNLDB(SNLID::DBID id);
